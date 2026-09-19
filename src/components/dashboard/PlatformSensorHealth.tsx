@@ -82,46 +82,47 @@ export const PlatformSensorHealth: React.FC = () => {
         )}
 
         {/* Sensor Grid */}
-        <div className="grid grid-cols-4 lg-grid-cols-2 md-grid-cols-1 gap-3">
+        <div className="grid grid-cols-4 lg-grid-cols-2 md-grid-cols-1 gap-4">
           {sensors.map((sensor) => {
             const isSensorDegraded = sensor.status === 'degraded';
             return (
               <div
                 key={sensor.id}
-                className="p-3 flex flex-col gap-2"
+                className="flex flex-col gap-3"
                 style={{
                   backgroundColor: 'var(--bg-surface-elevated)',
                   border: isSensorDegraded ? '1px solid var(--state-degraded-border)' : '1px solid var(--border-default)',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '16px 18px',
                 }}
               >
                 <div className="flex items-center justify-between">
-                  <span style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--text-primary)' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.84rem', color: 'var(--text-primary)' }}>
                     {sensor.name}
                   </span>
                   <span
                     className={`badge ${
                       isSensorDegraded ? 'badge-degraded' : 'badge-healthy'
                     }`}
-                    style={{ fontSize: '0.62rem', padding: '1px 5px' }}
+                    style={{ fontSize: '0.64rem', padding: '2px 6px' }}
                   >
                     {isSensorDegraded ? 'DEGRADED' : 'HEALTHY'}
                   </span>
                 </div>
 
-                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
                   {sensor.location}
                 </span>
 
-                <div className="flex items-center justify-between pt-1 font-mono" style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+                <div className="flex items-center justify-between pt-1 font-mono" style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
                   <span>{sensor.packetsPerSec.toLocaleString()} pps</span>
-                  <span style={{ color: sensor.droppedPacketsRate > 5 ? 'var(--severity-critical-text)' : 'inherit' }}>
+                  <span style={{ color: sensor.droppedPacketsRate > 5 ? 'var(--severity-critical-text)' : 'inherit', fontWeight: 600 }}>
                     {sensor.droppedPacketsRate}% drop
                   </span>
                 </div>
 
                 {sensor.notes && (
-                  <p style={{ fontSize: '0.68rem', color: 'var(--state-degraded-text)', fontStyle: 'italic', marginTop: '2px' }}>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--state-degraded-text)', fontStyle: 'italic', marginTop: '2px', lineHeight: 1.4 }}>
                     {sensor.notes}
                   </p>
                 )}

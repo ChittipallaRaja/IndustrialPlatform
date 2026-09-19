@@ -31,18 +31,18 @@ export const PostureSummary: React.FC = () => {
   const overallPostureScore = Math.max(12, 100 - (criticalFindings.length * 18 + activePaths.length * 15));
 
   return (
-    <section aria-labelledby="posture-summary-heading" className="flex flex-col gap-3">
+    <section aria-labelledby="posture-summary-heading" className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h2 id="posture-summary-heading" className="card-title flex items-center gap-2">
           <ShieldAlert size={18} className="text-brand" aria-hidden="true" />
           <span>Security Posture & Executive Priorities</span>
         </h2>
-        <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>
+        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
           Continuous Purdue Level 0–4 Evaluation
         </span>
       </div>
 
-      <div className="grid grid-cols-4 lg-grid-cols-2 md-grid-cols-1 gap-4">
+      <div className="grid grid-cols-4 lg-grid-cols-2 md-grid-cols-1 gap-5">
         {/* KPI 1: Overall Security Posture */}
         <KpiCard
           label="Security Posture Index"

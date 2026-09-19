@@ -28,7 +28,7 @@ export const NetworkTopologyInsight: React.FC = () => {
       </div>
 
       <div className="card-body flex flex-col gap-4">
-        <div className="grid grid-cols-3 lg-grid-cols-2 md-grid-cols-1 gap-4">
+        <div className="grid grid-cols-3 lg-grid-cols-2 md-grid-cols-1 gap-5">
           {zones.map((zone) => {
             const isSelected = filters.zone === zone.id;
             const isUnsegmented = zone.segmentationStatus === 'unsegmented';

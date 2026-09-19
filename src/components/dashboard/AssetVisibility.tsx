@@ -62,12 +62,13 @@ export const AssetVisibility: React.FC = () => {
 
           <div
             style={{
-              height: '18px',
+              height: '22px',
               borderRadius: 'var(--radius-sm)',
               overflow: 'hidden',
               display: 'flex',
               backgroundColor: 'var(--bg-surface-highlight)',
               gap: '2px',
+              margin: '6px 0 10px 0',
             }}
           >
             {([4, 3.5, 3, 2, 1, 0] as const).map((lvl) => {
@@ -93,7 +94,7 @@ export const AssetVisibility: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '9px',
+                    fontSize: '10px',
                     fontFamily: 'var(--font-mono)',
                     color: '#ffffff',
                     fontWeight: 700,

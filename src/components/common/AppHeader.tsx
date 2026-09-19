@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   RefreshCw,
   Loader2,
+  Menu,
 } from 'lucide-react';
 import { usePlatform } from '../../context/PlatformContext';
 import { SimulationMode } from '../../types';
@@ -23,6 +24,7 @@ export const AppHeader: React.FC = () => {
     setSimMode,
     theme,
     toggleTheme,
+    toggleMobileSidebar,
     setIsSearchOpen,
     setIsDesignRationaleOpen,
     retryLoading,
@@ -52,6 +54,16 @@ export const AppHeader: React.FC = () => {
     <>
       <header className="app-header">
         <div className="header-left">
+          {/* Mobile Hamburger Menu Toggle Button */}
+          <button
+            type="button"
+            className="mobile-menu-btn"
+            onClick={toggleMobileSidebar}
+            aria-label="Toggle navigation menu"
+          >
+            <Menu size={20} />
+          </button>
+
           <div className="header-title-group">
             <h1>{titleMap[currentView]}</h1>
             <p className="header-subtitle">{subtitleMap[currentView]}</p>
@@ -67,19 +79,20 @@ export const AppHeader: React.FC = () => {
             aria-label="Search Assets, Findings, or Attack Paths. Press Control K"
           >
             <Search size={15} aria-hidden="true" />
-            <span>Search assets, CVEs, paths...</span>
+            <span className="search-text-full">Search assets, CVEs, paths...</span>
+            <span className="search-text-compact">Search...</span>
             <kbd className="kbd-shortcut">Ctrl+K</kbd>
           </button>
 
           {/* Design Rationale & Docs Button */}
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="btn btn-secondary btn-sm header-doc-btn"
             onClick={() => setIsDesignRationaleOpen(true)}
             aria-label="Open Design Rationale & Product Architecture Documentation"
           >
             <BookOpen size={14} className="text-brand" aria-hidden="true" />
-            <span>Design Rationale</span>
+            <span>Rationale</span>
           </button>
 
           {/* Theme Switcher */}
@@ -97,7 +110,7 @@ export const AppHeader: React.FC = () => {
 
       {/* Interactive State Simulation Switcher Bar */}
       <div className="sim-state-banner" role="region" aria-label="Environment State Simulation Switcher">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sim-label-box" style={{ flexShrink: 0 }}>
           <Sliders size={14} className="text-brand" aria-hidden="true" />
           <span style={{ fontWeight: 700, fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
             Simulate State:

@@ -5,9 +5,8 @@ import {
   Shield,
   Radio,
   BookOpen,
-  Activity,
   Layers,
-  Server,
+  X,
 } from 'lucide-react';
 import { usePlatform } from '../../context/PlatformContext';
 
@@ -19,94 +18,130 @@ export const AppSidebar: React.FC = () => {
     attackPaths,
     simMode,
     setIsDesignRationaleOpen,
+    isMobileSidebarOpen,
+    setIsMobileSidebarOpen,
   } = usePlatform();
 
   const criticalFindingsCount = findings.filter((f) => f.severity === 'critical').length;
   const activePathsCount = attackPaths.filter((p) => p.status === 'active').length;
 
+  const handleNavClick = (view: 'dashboard' | 'attack-path') => {
+    setCurrentView(view);
+    setIsMobileSidebarOpen(false);
+  };
+
+  const handleRationaleClick = () => {
+    setIsDesignRationaleOpen(true);
+    setIsMobileSidebarOpen(false);
+  };
+
   return (
-    <aside className="app-sidebar" aria-label="Main Navigation">
-      <div className="sidebar-header">
-        <div className="brand-icon-box" aria-hidden="true">
-          <Shield size={20} strokeWidth={2.5} />
-        </div>
-        <div className="brand-title">
-          <span>CYBERGUARD</span>
-          <span className="brand-sub">OT / ICS DEFENSE</span>
-        </div>
-      </div>
+    <>
+      {/* Mobile Drawer Backdrop */}
+      {isMobileSidebarOpen && (
+        <div
+          className="mobile-sidebar-backdrop"
+          onClick={() => setIsMobileSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
-      <nav className="sidebar-nav">
-        <button
-          type="button"
-          className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setCurrentView('dashboard')}
-          aria-current={currentView === 'dashboard' ? 'page' : undefined}
-        >
-          <LayoutDashboard size={18} aria-hidden="true" />
-          <span>Dashboard</span>
-          {criticalFindingsCount > 0 && (
-            <span className="nav-badge badge-critical">
-              {criticalFindingsCount}
-            </span>
-          )}
-        </button>
+      <aside
+        className={`app-sidebar ${isMobileSidebarOpen ? 'mobile-open' : ''}`}
+        aria-label="Main Navigation"
+      >
+        <div className="sidebar-header">
+          <div className="brand-icon-box" aria-hidden="true">
+            <Shield size={20} strokeWidth={2.5} />
+          </div>
+          <div className="brand-title">
+            <span>CYBERGUARD</span>
+            <span className="brand-sub">OT / ICS DEFENSE</span>
+          </div>
 
-        <button
-          type="button"
-          className={`nav-item ${currentView === 'attack-path' ? 'active' : ''}`}
-          onClick={() => setCurrentView('attack-path')}
-          aria-current={currentView === 'attack-path' ? 'page' : undefined}
-        >
-          <GitFork size={18} aria-hidden="true" />
-          <span>Attack Path Map</span>
-          {activePathsCount > 0 && (
-            <span className="nav-badge badge-high">
-              {activePathsCount} PATHS
-            </span>
-          )}
-        </button>
-
-        <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
+          {/* Close button visible on mobile */}
           <button
             type="button"
-            className="nav-item"
-            onClick={() => setIsDesignRationaleOpen(true)}
-            aria-label="View Design Rationale Documentation"
+            className="mobile-sidebar-close-btn"
+            onClick={() => setIsMobileSidebarOpen(false)}
+            aria-label="Close navigation menu"
           >
-            <BookOpen size={18} className="text-brand" aria-hidden="true" />
-            <span>Design Rationale</span>
+            <X size={18} />
           </button>
         </div>
-      </nav>
 
-      <div className="sidebar-footer">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>
-              OT Telemetry Status
-            </span>
-            <span
-              className={`badge ${
-                simMode === 'degraded-sensor' ? 'badge-degraded' : 'badge-healthy'
-              }`}
-              style={{ padding: '1px 6px', fontSize: '0.64rem' }}
+        <nav className="sidebar-nav">
+          <button
+            type="button"
+            className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
+            onClick={() => handleNavClick('dashboard')}
+            aria-current={currentView === 'dashboard' ? 'page' : undefined}
+          >
+            <LayoutDashboard size={18} aria-hidden="true" />
+            <span>Dashboard</span>
+            {criticalFindingsCount > 0 && (
+              <span className="nav-badge badge-critical">
+                {criticalFindingsCount}
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`nav-item ${currentView === 'attack-path' ? 'active' : ''}`}
+            onClick={() => handleNavClick('attack-path')}
+            aria-current={currentView === 'attack-path' ? 'page' : undefined}
+          >
+            <GitFork size={18} aria-hidden="true" />
+            <span>Attack Path Map</span>
+            {activePathsCount > 0 && (
+              <span className="nav-badge badge-high">
+                {activePathsCount} PATHS
+              </span>
+            )}
+          </button>
+
+          <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
+            <button
+              type="button"
+              className="nav-item"
+              onClick={handleRationaleClick}
+              aria-label="View Design Rationale Documentation"
             >
-              {simMode === 'degraded-sensor' ? 'DEGRADED' : 'ONLINE'}
-            </span>
+              <BookOpen size={18} className="text-brand" aria-hidden="true" />
+              <span>Design Rationale</span>
+            </button>
           </div>
+        </nav>
 
-          <div className="flex items-center gap-2" style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-            <Radio size={13} className={simMode === 'degraded-sensor' ? 'text-brand' : 'text-healthy'} />
-            <span>4 Industrial Sensors Active</span>
-          </div>
+        <div className="sidebar-footer">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>
+                OT Telemetry Status
+              </span>
+              <span
+                className={`badge ${
+                  simMode === 'degraded-sensor' ? 'badge-degraded' : 'badge-healthy'
+                }`}
+                style={{ padding: '1px 6px', fontSize: '0.64rem' }}
+              >
+                {simMode === 'degraded-sensor' ? 'DEGRADED' : 'ONLINE'}
+              </span>
+            </div>
 
-          <div className="flex items-center gap-2" style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-            <Layers size={13} className="text-muted" />
-            <span>6 Purdue Zones Monitored</span>
+            <div className="flex items-center gap-2" style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+              <Radio size={13} className={simMode === 'degraded-sensor' ? 'text-brand' : 'text-healthy'} />
+              <span>4 Industrial Sensors Active</span>
+            </div>
+
+            <div className="flex items-center gap-2" style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+              <Layers size={13} className="text-muted" />
+              <span>6 Purdue Zones Monitored</span>
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };

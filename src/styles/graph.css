@@ -1,6 +1,7 @@
 /* ==========================================================================
    ATTACK PATH GRAPH STYLES & INTERACTION ENGINE
    High-performance SVG Canvas, Nodes, Directed Edges, Minimap, Controls
+   Responsive Mobile, Tablet, and Desktop Graph Visualizations
    ========================================================================== */
 
 .graph-workspace {
@@ -16,6 +17,7 @@
   user-select: none;
   display: flex;
   flex-direction: column;
+  touch-action: none;
 }
 
 .graph-viewport-svg {
@@ -233,6 +235,7 @@
   align-items: center;
   gap: 6px;
   transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
 .graph-btn:hover {
@@ -263,6 +266,7 @@
   justify-content: space-between;
   pointer-events: none;
   z-index: 10;
+  gap: 12px;
 }
 
 .graph-legend-box {
@@ -299,6 +303,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 /* --- MINIMAP --- */
@@ -312,6 +317,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  flex-shrink: 0;
 }
 
 .minimap-viewport-rect {
@@ -351,4 +357,68 @@
   padding: 6px 12px;
   border-radius: var(--radius-md);
   cursor: pointer;
+  max-width: 220px;
+}
+
+/* ==========================================================================
+   RESPONSIVE GRAPH MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .graph-workspace {
+    height: calc(100vh - 120px);
+    min-height: 500px;
+  }
+
+  .graph-top-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .graph-control-cluster {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding: 4px 8px;
+  }
+
+  .blast-radius-floating-panel {
+    top: 135px;
+    left: 12px;
+    width: calc(100% - 24px);
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 768px) {
+  .minimap-container {
+    display: none;
+  }
+
+  .graph-bottom-bar {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    flex-direction: column;
+  }
+
+  .graph-legend-box {
+    max-width: 100%;
+    padding: 8px 10px;
+  }
+
+  .legend-items-grid {
+    gap: 4px 8px;
+    font-size: 0.68rem;
+  }
+
+  .path-select-dropdown {
+    max-width: 150px;
+    font-size: 0.72rem;
+  }
 }

@@ -36,6 +36,10 @@ interface PlatformContextType {
   theme: 'dark' | 'light';
   toggleTheme: () => void;
 
+  isMobileSidebarOpen: boolean;
+  setIsMobileSidebarOpen: (open: boolean) => void;
+  toggleMobileSidebar: () => void;
+
   assets: Asset[];
   findings: Finding[];
   attackPaths: AttackPath[];
@@ -106,6 +110,9 @@ export const PlatformProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [simMode, setSimMode] = useState<SimulationMode>('high-risk');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
+  // Responsive mobile sidebar drawer state
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
+
   // Interactive Investigation Drawer States (Default Closed)
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [selectedFinding, setFindingState] = useState<Finding | null>(null);
@@ -132,6 +139,10 @@ export const PlatformProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen((prev) => !prev);
   };
 
   const updateFilter = (key: keyof GlobalFilters, value: any) => {
@@ -291,6 +302,7 @@ export const PlatformProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
       if (e.key === 'Escape') {
         closeDrawer();
+        setIsMobileSidebarOpen(false);
         setIsCompareOpen(false);
         setIsSearchOpen(false);
         setIsDesignRationaleOpen(false);
@@ -314,6 +326,9 @@ export const PlatformProvider: React.FC<{ children: ReactNode }> = ({ children }
         setSimMode,
         theme,
         toggleTheme,
+        isMobileSidebarOpen,
+        setIsMobileSidebarOpen,
+        toggleMobileSidebar,
         assets,
         findings,
         attackPaths,

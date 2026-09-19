@@ -96,6 +96,26 @@ export const AttackPathWorkspace: React.FC = () => {
 
   const handleMouseUp = () => setIsDragging(false);
 
+  // Touch drag pan for mobile & tablet
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      setIsDragging(true);
+      setDragStart({ x: touch.clientX - pan.x, y: touch.clientY - pan.y });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    const touch = e.touches[0];
+    setPan({
+      x: touch.clientX - dragStart.x,
+      y: touch.clientY - dragStart.y,
+    });
+  };
+
+  const handleTouchEnd = () => setIsDragging(false);
+
   // Wheel zoom
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
@@ -138,6 +158,9 @@ export const AttackPathWorkspace: React.FC = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onWheel={handleWheel}
         aria-label="Attack Path Directed Graph"
       >
